@@ -457,10 +457,13 @@ ifeq ($(PLATFORM),PLATFORM_RPI)
     INCLUDE_PATHS += -I$(RPI_TOOLCHAIN_SYSROOT)/opt/vc/include/interface/vcos/pthreads
 endif
 ifeq ($(PLATFORM),PLATFORM_DRM)
-    INCLUDE_PATHS += -I/usr/include/libdrm
-    ifeq ($(USE_RPI_CROSSCOMPILER), TRUE)
+    ifeq ($(USE_RPI_CROSS_COMPILER),TRUE)
         INCLUDE_PATHS += -I$(RPI_TOOLCHAIN_SYSROOT)/usr/include
         INCLUDE_PATHS += -I$(RPI_TOOLCHAIN_SYSROOT)/opt/vc/include
+        INCLUDE_PATHS += -I$(RPI_TOOLCHAIN_SYSROOT)/usr/include/drm
+        INCLUDE_PATHS += -I$(RPI_TOOLCHAIN_SYSROOT)/usr/include/libdrm
+    else
+        INCLUDE_PATHS += -I/usr/include/libdrm
     endif
 endif
 ifeq ($(PLATFORM),PLATFORM_ANDROID)
@@ -510,7 +513,7 @@ ifeq ($(PLATFORM),PLATFORM_RPI)
 endif
 ifeq ($(PLATFORM),PLATFORM_DRM)
     LDFLAGS += -Wl,-soname,lib$(RAYLIB_LIB_NAME).so.$(RAYLIB_API_VERSION)
-    ifeq ($(USE_RPI_CROSSCOMPILER), TRUE)
+    ifeq ($(USE_RPI_CROSS_COMPILER), TRUE)
         INCLUDE_PATHS += -L$(RPI_TOOLCHAIN_SYSROOT)/opt/vc/lib -L$(RPI_TOOLCHAIN_SYSROOT)/usr/lib
     endif
 endif
